@@ -42,16 +42,20 @@ class Character {
   }
 
   moveUp() {
-    return (this.col -= 1);
+    return (this.row -= 1);
   }
   moveRight() {
-    return (this.row += 1);
+    return (this.col += 1);
   }
   moveDown() {
-    return (this.col += 1);
+    return (this.row += 1);
   }
   moveLeft() {
     return (this.col -= 1);
+  }
+
+  playerClean() {
+    context.clearRect(col * 50, row * 50, 50, 50);
   }
 }
 
@@ -60,7 +64,7 @@ function drawPlayer(row, col) {
   playerImage.src = '/images/character-down.png';
 
   playerImage.addEventListener('load', () => {
-    context.drawImage(playerImage, row * 50, col * 50, 50, 50);
+    context.drawImage(playerImage, col * 50, row * 50, 50, 50);
   });
 }
 
@@ -83,17 +87,51 @@ function drawTreasure(row, col) {
   treasureImage.src = '/images/treasure.png';
 
   treasureImage.addEventListener('load', () => {
-    context.drawImage(treasureImage, row * 50, col * 50, 50, 50);
+    context.drawImage(treasureImage, col * 50, row * 50, 50, 50);
   });
 }
+const player = new Character(0, 0);
+const treasure = new Treasure(0, 0);
+treasure.setRandomPosition();
+
+const clean = () => {
+  context.clearRect(0, 0, 500, 500);
+};
 
 function drawEverything() {
+  clean();
   drawGrid();
-  const player = new Character(0, 0);
+  // const player = new Character(0, 0);
+
   drawPlayer(player.row, player.col);
-  const treasure = new Treasure(0, 0);
-  treasure.setRandomPosition();
   drawTreasure(treasure.row, treasure.col);
 }
-
 drawEverything();
+window.addEventListener('keydown', (event) => {
+  // Stop the default behavior (moving the screen to the left/up/right/down)
+  event.preventDefault();
+
+  const keyCode = event.keyCode;
+  console.log(keyCode);
+  // React based on the key pressed
+  switch (keyCode) {
+    case 37:
+      console.log('left');
+      // clean();
+      player.moveLeft();
+      break;
+    case 38:
+      console.log('up');
+      player.moveUp();
+      break;
+    case 39:
+      console.log('right');
+      player.moveRight();
+      break;
+    case 40:
+      console.log('down');
+      player.moveDown();
+      break;
+  }
+  drawEverything();
+});
