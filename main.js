@@ -54,9 +54,9 @@ class Character {
     return (this.col -= 1);
   }
 
-  playerClean() {
-    context.clearRect(col * 50, row * 50, 50, 50);
-  }
+  // playerClean() {
+  //   context.clearRect(col * 50, row * 50, 50, 50);
+  // }
 }
 
 function drawPlayer(row, col) {
@@ -82,10 +82,12 @@ class Treasure {
   }
 }
 
+// const treasureImage = new Image();
+// treasureImage.src = '/images/treasure.png';
+
 function drawTreasure(row, col) {
   const treasureImage = new Image();
   treasureImage.src = '/images/treasure.png';
-
   treasureImage.addEventListener('load', () => {
     context.drawImage(treasureImage, col * 50, row * 50, 50, 50);
   });
@@ -95,21 +97,28 @@ const treasure = new Treasure(0, 0);
 treasure.setRandomPosition();
 
 const clean = () => {
-  context.clearRect(0, 0, 500, 500);
+  context.clearRect(player.col * 50, player.row * 50, 50, 50);
 };
 
 function drawEverything() {
-  clean();
+  // clean();
   drawGrid();
   // const player = new Character(0, 0);
-  drawTreasure(treasure.row, treasure.col);
+  // drawTreasure(treasure.row, treasure.col);
+
   drawPlayer(player.row, player.col);
 }
+
+drawTreasure(treasure.row, treasure.col);
+// drawGrid();
 drawEverything();
 window.addEventListener('keydown', (event) => {
   // Stop the default behavior (moving the screen to the left/up/right/down)
   event.preventDefault();
-
+  // player.playerClean();
+  clean();
+  if (player.row === treasure.row && player.col === treasure.col)
+    drawTreasure(treasure.row, treasure.col);
   const keyCode = event.keyCode;
   console.log(keyCode);
   // React based on the key pressed
@@ -132,5 +141,8 @@ window.addEventListener('keydown', (event) => {
       player.moveDown();
       break;
   }
+
+  if (player.row === treasure.row && player.col === treasure.col)
+    alert('I got it');
   drawEverything();
 });
