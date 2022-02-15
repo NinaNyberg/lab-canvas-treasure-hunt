@@ -102,9 +102,8 @@ function drawEverything() {
   clean();
   drawGrid();
   // const player = new Character(0, 0);
-
-  drawPlayer(player.row, player.col);
   drawTreasure(treasure.row, treasure.col);
+  drawPlayer(player.row, player.col);
 }
 drawEverything();
 window.addEventListener('keydown', (event) => {
